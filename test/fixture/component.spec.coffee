@@ -11,6 +11,7 @@ controller:
             ~ two
             ~ three
         ]
+
 template: '
         |section
         |   header
@@ -30,3 +31,5 @@ wiredModuleShortSyntax:
 wiredModuleLongSyntax:
     wire: 
         spec: './wiredModule.spec.coffee'
+middleware:
+    router: '<- ./navigation.router.js'

@@ -9,12 +9,14 @@ import wire                 from 'essential-wire';
 
 import normalize from '../../src/assets/normalize';
 import replaceReference from '../../src/assets/replaceReference';
+import importModuleReplacement from '../../src/assets/importModuleReplacement';
 
 import spec from '../fixture/component.spec.coffee';
 
 describe('asset methods', () => {
     let str = normalize('one.super.spec.coffee');
     let refString = replaceReference("~oneRef, ~ anotherRef123");
+    let textWithImports = "    '<-  ./some/path'       '<-  ./some/path2'   ";
 
     it('should capitalize fragments and remove extention', () => {
         expect(str).to.equal('oneSuperSpec');
@@ -22,6 +24,13 @@ describe('asset methods', () => {
 
     it('should replace references', () => {
         expect(refString).to.equal("{$ref: 'oneRef'}, {$ref: 'anotherRef123'}");
+    });
+
+    it('should return list imported pathes', () => {
+        var result = importModuleReplacement(textWithImports);
+        expect(result).to.be.an('array');
+        expect(result[0]).to.equal('./some/path');
+        expect(result[1]).to.equal('./some/path2');
     });
 });
 
@@ -58,6 +67,11 @@ describe('wired context', () => {
     });
 
     it('should provide reference to another component ~', (done) => {
+        done()
+    });
+
+    xit('should import module by sign <- ', (done) => {
+        expect(rootContext.middleware).to.be.a('function');
         done()
     });
 
