@@ -1,12 +1,14 @@
 $plugins: [
     './plugins/simpe'
 ]
-two: [1,2,3],
+two: [10,20,30],
 one: {$ref: 'two'}
 controller: 
     create: './TestClass'
     ready: 
-        saySmth: 123
+        saySmth: [
+            {$ref: 'one'}
+        ]
 template: '
         |section
         |   header
