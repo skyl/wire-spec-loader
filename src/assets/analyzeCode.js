@@ -5,6 +5,18 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
     var specComponents;
     var pendingPlugins = [];
 
+    function changeComponentDescription(props) {
+        var path = props.value.value;
+        var moduleName = normalize(_.last(path.split('/'))) + _.uniqueId();
+        pendingImports.push({name: moduleName, path: path});
+        props.value = _.extend(props.value, 
+            {
+                type: "Identifier",
+                name: moduleName
+            }
+        );
+    }
+
     traverseFunc(ast, function(node) {
         if(node.type === 'ExpressionStatement' ){
             specComponents = node.expression.properties
@@ -33,23 +45,18 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
                             (props.key.name === 'create' || props.key.name === 'module' || props.key.name === 'wire' )
                         ){
                             if(props.value.type === 'Literal') {
-                                var path = props.value.value;
-                                var moduleName = normalize(_.last(path.split('/'))) + _.uniqueId();
-                                pendingImports.push({name: moduleName, path: path});
-                                props.value = _.extend(props.value, 
-                                    {
-                                        type: "Identifier",
-                                        name: moduleName
-                                    }
-                                );
+                                changeComponentDescription(props);
                             }
                         }
 
                         if(props.key.type === 'Identifier' && props.key.name === 'wire'){
-                            // if(props.value.type === 'Literal') {
-                            //     var path = props.value.value;
-                            //     console.log("props.value::::", props.value);
-                            // }
+                            if(props.value.type === 'ObjectExpression') {
+                                _.each(props.value.properties, function(props){
+                                    if(props.key.type === 'Identifier' && props.key.name === 'spec'){
+                                        changeComponentDescription(props);
+                                    }
+                                });
+                            }
                         }
                     })
                 }

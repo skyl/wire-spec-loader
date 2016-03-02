@@ -39,13 +39,24 @@ describe('wired context', () => {
     beforeEach(before);
 
     it('should be ok', (done) => {
+        console.log("rootContext.template", rootContext.template);
         expect(rootContext).to.be.ok;
-        expect(rootContext.two).to.be.a('array');
+        expect(rootContext.two).to.be.an('array');
         expect(rootContext.template).to.be.a('string');
-        expect(rootContext.controller).to.be.a('object');
+        expect(rootContext.controller).to.be.an('object');
         expect(rootContext.controller.saySmth).to.be.a('function');
-        expect(rootContext.wiredDeferredModule).to.be.a('function');
         done();
+    });
+
+    it('should understand wire factory', (done) => {
+        expect(rootContext.wiredDeferredModule).to.be.a('function');
+        expect(rootContext.wiredModuleShortSyntax).to.be.an('object');
+        expect(rootContext.wiredModuleLongSyntax).to.be.an('object');
+        done()
+    });
+
+    xit('should provide reference to another component ~', (done) => {
+        done()
     });
 
 });

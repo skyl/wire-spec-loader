@@ -7,7 +7,7 @@ controller:
     create: './TestClass'
     ready: 
         saySmth: [
-            {$ref: 'one'}
+            
         ]
 template: '
         |section
@@ -21,7 +21,10 @@ someModule:
     module: './someModule'
 wiredDeferredModule:
     wire:
-        spec: './wiredDeferredModuleSpec'
+        spec: './wired.deferred.module.spec.coffee'
         defer: true
 wiredModuleShortSyntax:
     wire: './wiredModule.spec.coffee'
+wiredModuleLongSyntax:
+    wire: 
+        spec: './wiredModule.spec.coffee'
