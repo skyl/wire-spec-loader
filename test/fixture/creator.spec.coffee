@@ -1,5 +1,8 @@
 {
     controller: {
-        create: './TestClass'
+        create: './TestClass',
+        ready: {
+            doSmth: 123
+        }
     }
 }

@@ -4,6 +4,7 @@ var escodegen = require('escodegen');
 var _ = require('underscore');
 
 var imports = '';
+var pendingImports = [];
 
 var defaultSpecRegex = /\.(wire\.spec|wire)$/;
 var removeCommentsRx = /\/\*[\s\S]*?\*\//g;
@@ -13,12 +14,12 @@ module.exports = function(source) {
     this.cacheable && this.cacheable();
     var result = coffee.compile(source, {bare: true});
 
-    // result = result.replace(removeCommentsRx, '');
+    var specComponents = analyzeCode(result);
 
-    var ast = analyzeCode(result);
-    result = "module.exports = " + escodegen.generate(ast);
+    var ast = wrapInModuleExportExpression(specComponents);
+    addImports(ast);
 
-    // result+= "console.log(controller1('HELLO'));"
+    result = escodegen.generate(ast);
 
     console.log("result:::", result);
 
@@ -28,9 +29,10 @@ module.exports = function(source) {
 function analyzeCode(code) {
     var ast = esprima.parse(code);
 
+    var specComponents;
     traverse(ast, function(node) {
         if(node.type === 'ExpressionStatement' ){
-            var specComponents = node.expression.properties
+            specComponents = node.expression.properties
             _.each(specComponents, function(component){
                 if(component.value.type === 'ObjectExpression'){
                     _.each(component.value.properties, function(props){
@@ -38,7 +40,7 @@ function analyzeCode(code) {
                             if(props.value.type === 'Literal') {
                                 var path = props.value.value;
                                 var moduleName = _.last(path.split('/')) + _.uniqueId();
-                                pushImport(ast, moduleName, path);
+                                pendingImports.push({name: moduleName, path: path});
                                 props.value = _.extend(props.value, 
                                     {
                                         type: "Identifier",
@@ -52,7 +54,7 @@ function analyzeCode(code) {
             })
         }
     });
-    return ast;
+    return specComponents;
 }
 
 function traverse(node, func) {
@@ -73,8 +75,14 @@ function traverse(node, func) {
     }
 }
 
-function pushImport(ast, varName, path) {
-    ast.body.push({
+function addImports(ast) {
+    _.each(pendingImports, function(obj) {
+        addImport(ast, obj.name, obj.path);
+    })
+}
+
+function addImport(ast, varName, path) {
+    ast.body.unshift({
         "type": "VariableDeclaration",
         "declarations": [
             {
@@ -101,4 +109,38 @@ function pushImport(ast, varName, path) {
         ],
         "kind": "var"
     });
+}
+
+function wrapInModuleExportExpression(properties) {
+    var ast = {
+        "type": "Program",
+        "body": [],
+        "sourceType": "script"
+    }
+
+    ast.body.push({
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                    "type": "Identifier",
+                    "name": "module"
+                },
+                "property": {
+                    "type": "Identifier",
+                    "name": "exports"
+                }
+            },
+            "right": {
+                "type": "ObjectExpression",
+                "properties": properties
+            }
+        }
+    });
+    
+    return ast;
 }

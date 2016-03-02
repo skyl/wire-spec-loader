@@ -7,10 +7,10 @@ chai.use(spies);
 import wire                 from 'essential-wire';
 // import wireDebugPlugin      from 'essential-wire/source/debug';
 
-// import spec from '../fixture/creator.spec.coffee';
-import mockSpec from '../fixture/mock.js';
+import spec from '../fixture/creator.spec.coffee';
+// import mockSpec from '../fixture/mock.js';
 
-describe('wired context', () => {
+xdescribe('wired context', () => {
 
     let rootContext = null;
 
@@ -33,7 +33,7 @@ describe('wired context', () => {
 
 });
 
-xdescribe('wired context', () => {
+describe('wired context', () => {
 
     let rootContext = null;
 

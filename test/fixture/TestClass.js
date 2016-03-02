@@ -1,5 +1,4 @@
-function TestClass(str) {
-    console.log(str);
+function TestClass() {
 }
 
 TestClass.prototype.doSmth = function(str) {
