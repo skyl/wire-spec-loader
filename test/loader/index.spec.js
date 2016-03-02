@@ -23,7 +23,7 @@ describe('assets', () => {
     });
 });
 
-xdescribe('wired context', () => {
+describe('wired context', () => {
 
     let rootContext = null;
 
