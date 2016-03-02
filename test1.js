@@ -1,27 +1,23 @@
 var coffee = require('coffee-script');
+var fs = require('fs');
 var esprima = require('esprima');
 var escodegen = require('escodegen');
 var _ = require('underscore');
 
-var imports = '';
+var source = fs.readFileSync('./test/fixture/component.spec.coffee', 'utf-8');
 
-var defaultSpecRegex = /\.(wire\.spec|wire)$/;
-var removeCommentsRx = /\/\*[\s\S]*?\*\//g;
+var imports = [];
+var result = coffee.compile(source, {bare: true});
 
+var ast = analyzeCode(result);
+console.log(escodegen.generate(ast));
 
-module.exports = function(source) {
-    this.cacheable && this.cacheable();
-    var result = coffee.compile(source, {bare: true});
-    // result = 'module.exports = ' + result;
-
-    result = result.replace(removeCommentsRx, '');
-    regenerateCode(result);
-    return result;
-};
-
-function regenerateCode(code) {
+function analyzeCode(code) {
     var ast = esprima.parse(code);
     traverse(ast, function(node) {
+        // console.log("NODE:::", node);
+        // return;
+
         if(node.type === 'ExpressionStatement' ){
             var specComponents = node.expression.right.properties
             _.each(specComponents, function(component){
@@ -30,7 +26,7 @@ function regenerateCode(code) {
                         if(props.key.type === 'Identifier' && (props.key.name === 'create' || props.key.name === 'module')){
                             var path = props.value.value;
                             var moduleName = _.last(path.split('/')) + _.uniqueId();
-                            imports += "var " + moduleName + " = require('" + path + "');");
+                            imports.push("var " + moduleName + " = require('" + path + "');");
                             props.value = _.extend(props.value, 
                                 {raw: moduleName}
                             );
@@ -38,9 +34,12 @@ function regenerateCode(code) {
                     })
                 }
             })
+
+            node.expression.right.properties = specComponents;
+            console.log("specComponents:::", specComponents);
         }
     });
-    return escodegen.generate(ast);
+    return ast;
 }
 
 function traverse(node, func) {

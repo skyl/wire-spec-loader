@@ -11,5 +11,8 @@ module.exports = {
         |       oneBlock
         |       twoBlock
         |   footer
-    '
+    ',
+    someModule: {
+        module: '../fixture/someModule'
+    },
 }
