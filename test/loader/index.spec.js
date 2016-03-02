@@ -11,14 +11,14 @@ import normalize from '../../src/assets/normalize';
 
 import spec from '../fixture/component.spec.coffee';
 
-describe('assets', () => {
+describe('normalize asset method', () => {
     let str = null;
     const before = () => {
         str = normalize('one.super.spec.coffee');
     }
 
     beforeEach(before);
-    it('should be ok', () => {
+    it('should capitalize fragments and remove extention', () => {
         expect(str).to.equal('oneSuperSpec');
     });
 });
