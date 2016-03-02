@@ -1,0 +1,43 @@
+{
+  "name": "wireSpecLoader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./runner && npm run karma-main",
+    "karma-main": "karma start test/config/main/karma.conf.js"
+  },
+  "keywords": [],
+  "author": "Denis Savenok <denissavenok@gmail.com> (http://designeng.github.io/)",
+  "license": "ISC",
+  "dependencies": {
+    "essential-wire": "git://github.com/designeng/essential-wire",
+    "coffee-script": "^1.10.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.15",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-syntax-class-properties": "^6.3.13",
+    "babel-plugin-transform-decorators-legacy": "^1.3.3",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-preset-stage-1": "^6.3.13",
+    "babel-runtime": "^5.8.20",
+    "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
+    "karma": "^0.13.15",
+    "karma-chai": "^0.1.0",
+    "karma-chai-plugins": "^0.6.1",
+    "karma-cli": "^0.1.1",
+    "karma-mocha": "^0.2.1",
+    "karma-osx-reporter": "^0.2.1",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-sourcemap-loader": "^0.3.6",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.3.4",
+    "phantomjs": "^1.9.19",
+    "phantomjs-polyfill": "0.0.1",
+    "webpack": "^1.12.13"
+  }
+}
