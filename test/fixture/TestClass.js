@@ -1,7 +1,7 @@
 function TestClass() {
 }
 
-TestClass.prototype.doSmth = function(str) {
+TestClass.prototype.saySmth = function(str) {
     console.log("doSmth says:::", str);
 }
 

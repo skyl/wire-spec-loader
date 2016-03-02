@@ -3,6 +3,9 @@
     one: {$ref: 'two'},
     controller: {
         create: './TestClass'
+        ready: {
+            saySmth: 123
+        }
     },
     template: '
         |section
@@ -12,4 +15,7 @@
         |       twoBlock
         |   footer
     '
+    someModule: {
+        module: './someModule'
+    }
 }
