@@ -31,5 +31,3 @@ wiredModuleShortSyntax:
 wiredModuleLongSyntax:
     wire: 
         spec: './wiredModule.spec.coffee'
-middleware:
-    router: '<- ./navigation.router.js'

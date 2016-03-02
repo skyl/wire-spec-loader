@@ -9,7 +9,7 @@ import wire                 from 'essential-wire';
 
 import normalize from '../../src/assets/normalize';
 import replaceReference from '../../src/assets/replaceReference';
-import importModuleReplacement from '../../src/assets/importModuleReplacement';
+import importModules from '../../src/assets/importModules';
 
 import spec from '../fixture/component.spec.coffee';
 
@@ -27,10 +27,10 @@ describe('asset methods', () => {
     });
 
     it('should return list imported pathes', () => {
-        var result = importModuleReplacement(textWithImports);
+        var result = importModules(textWithImports);
         expect(result).to.be.an('array');
-        expect(result[0]).to.equal('./some/path');
-        expect(result[1]).to.equal('./some/path2');
+        expect(result[0].path).to.equal('./some/path');
+        expect(result[1].path).to.equal('./some/path2');
     });
 });
 
@@ -70,8 +70,9 @@ describe('wired context', () => {
         done()
     });
 
+    // TODO
     xit('should import module by sign <- ', (done) => {
-        expect(rootContext.middleware).to.be.a('function');
+        expect(rootContext.middleware.api.router).to.be.a('function');
         done()
     });
 

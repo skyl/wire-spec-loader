@@ -16,6 +16,7 @@ module.exports = function(source) {
     result = replaceReference(result)
 
     var pendingImports = [];
+
     function addImports(ast) {
         _.each(pendingImports, function(obj) {
             addImport(ast, obj.name, obj.path);
