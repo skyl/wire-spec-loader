@@ -26,6 +26,7 @@ describe('wired context', () => {
 
     it('should be ok', (done) => {
         expect(rootContext).to.be.ok;
+        expect(rootContext.two).to.be.a('array');
         expect(rootContext.template).to.be.a('string');
         expect(rootContext.controller).to.be.a('object');
         expect(rootContext.controller.saySmth).to.be.a('function');
