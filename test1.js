@@ -8,7 +8,6 @@ var source = fs.readFileSync('./test/fixture/component.spec.coffee', 'utf-8');
 
 var imports = '';
 var pendingImports = [];
-var pendingPlugins = [];
 
 var result = coffee.compile(source, {bare: true});
 
@@ -24,6 +23,8 @@ function analyzeCode(code) {
     var ast = esprima.parse(code);
 
     var specComponents;
+    var pendingPlugins = [];
+    
     traverse(ast, function(node) {
         if(node.type === 'ExpressionStatement' ){
             specComponents = node.expression.properties
@@ -36,7 +37,7 @@ function analyzeCode(code) {
                         pendingPlugins.push({name: pluginName, path: path});
                         elements[index] = element;
                     });
-                    
+
                     component.value.elements = [];
                     _.each(pendingPlugins, function(plugin){
                         component.value.elements.push({
