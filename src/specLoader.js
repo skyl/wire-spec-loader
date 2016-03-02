@@ -9,8 +9,45 @@ var addImport = require('./assets/addImport');
 var replaceReference = require('./assets/replaceReference');
 var wrapInModuleExportExpression = require('./assets/wrapInModuleExportExpression');
 
+var wire = require('essential-wire');
+
+var compilationPlugin = require('./plugins/compile');
+var esprimaPlugin = require('./plugins/esprima/parse');
+var escodegenPlugin = require('./plugins/esprima/codegen');
+
 module.exports = function(source) {
     this.cacheable && this.cacheable();
+    var callback = this.async();
+
+    wire({
+        $plugins: [
+            compilationPlugin,
+            esprimaPlugin,
+            escodegenPlugin
+        ],
+        source: {
+            compile: source,
+        },
+        ast: {
+            parse: {$ref: 'source'},
+            recordImports: {}
+        },
+        // code: {
+        //     generate: {$ref: 'ast'}
+        // }
+    })
+    .then(function(context){
+        console.log("context::::", context);
+        callback(null, context.source);
+    })
+    .otherwise(function(error){
+        console.error("ERROR:::", error);
+        callback(error);
+    });
+
+    return;
+    // -------------
+
     var result = coffee.compile(source, {bare: true});
 
     result = replaceReference(result)
