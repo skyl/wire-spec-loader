@@ -2,7 +2,7 @@
     two: [1,2,3],
     one: {$ref: 'two'},
     controller: {
-        create: '../fixture/controller'
+        create: './TestClass'
     },
     template: '
         |section
@@ -11,8 +11,5 @@
         |       oneBlock
         |       twoBlock
         |   footer
-    ',
-    someModule: {
-        module: '../fixture/someModule'
-    },
+    '
 }

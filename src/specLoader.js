@@ -13,11 +13,15 @@ module.exports = function(source) {
     this.cacheable && this.cacheable();
     var result = coffee.compile(source, {bare: true});
 
-    result = result.replace(removeCommentsRx, '');
+    // result = result.replace(removeCommentsRx, '');
 
     var ast = analyzeCode(result);
     result = "module.exports = " + escodegen.generate(ast);
-    
+
+    // result+= "console.log(controller1('HELLO'));"
+
+    console.log("result:::", result);
+
     return result;
 };
 
@@ -31,15 +35,17 @@ function analyzeCode(code) {
                 if(component.value.type === 'ObjectExpression'){
                     _.each(component.value.properties, function(props){
                         if(props.key.type === 'Identifier' && (props.key.name === 'create' || props.key.name === 'module')){
-                            var path = props.value.value;
-                            var moduleName = _.last(path.split('/')) + _.uniqueId();
-                            pushImport(ast, moduleName, path);
-                            props.value = _.extend(props.value, 
-                                {
-                                    type: "Identifier",
-                                    name: moduleName
-                                }
-                            );
+                            if(props.value.type === 'Literal') {
+                                var path = props.value.value;
+                                var moduleName = _.last(path.split('/')) + _.uniqueId();
+                                pushImport(ast, moduleName, path);
+                                props.value = _.extend(props.value, 
+                                    {
+                                        type: "Identifier",
+                                        name: moduleName
+                                    }
+                                );
+                            }
                         }
                     })
                 }

@@ -7,32 +7,27 @@ chai.use(spies);
 import wire                 from 'essential-wire';
 // import wireDebugPlugin      from 'essential-wire/source/debug';
 
-// import spec from '../fixture/component.spec.coffee';
+// import spec from '../fixture/creator.spec.coffee';
+import mockSpec from '../fixture/mock.js';
 
-describe('create parse', () => {
-    let defaultModuleRegex = /\.(module|create)$/;
-    let defaultSpecRegex = /\.(wire\.spec|wire)$/;
-    let removeCommentsRx = /\/\*[\s\S]*?\*\//g;
-    let replaceIdsRegex = /(\bdefine)\s*\(\s*(?:\s*'([^']*)'|"([^"]*)"\s*,)?(?:\s*\[([^\]]*)\]\s*,)?/;
+describe('wired context', () => {
 
-    let source = "controller: {" +
-    "    create: '../fixture/controller'" +
-    "}";
+    let rootContext = null;
 
     const before = (done) => {
-        source.replace(removeCommentsRx, '')
-            .replace(replaceIdsRegex, function (m, def, mid1, mid2, depIds) {
-                console.log(m, def, mid1, mid2, depIds);
-                // done();
-            });
-
-        done();
+        wire(mockSpec)
+        .then(context => {
+            rootContext = context;
+            console.log("rootContext:::", rootContext);
+            done();
+        })
+        .otherwise(error => console.log("ERROR::::", error))
     }
 
     beforeEach(before);
 
     it('should be ok', (done) => {
-        expect(source).to.be.ok;
+        expect(rootContext).to.be.ok;
         done();
     });
 
@@ -46,6 +41,7 @@ xdescribe('wired context', () => {
         wire(spec)
         .then(context => {
             rootContext = context;
+            console.log("rootContext:::", rootContext);
             done();
         })
         .otherwise(error => console.log("ERROR::::", error))
@@ -55,8 +51,9 @@ xdescribe('wired context', () => {
 
     it('should be ok', (done) => {
         expect(rootContext).to.be.ok;
-        expect(rootContext.template).to.be.a('string');
-        expect(rootContext.controller).to.be.a('object');
+        // expect(rootContext.test).to.be.a('string');
+        // expect(rootContext.template).to.be.a('string');
+        // expect(rootContext.controller).to.be.a('object');
         done();
     });
 
