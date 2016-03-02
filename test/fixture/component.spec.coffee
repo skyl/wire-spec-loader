@@ -1,13 +1,15 @@
 $plugins: [
-    './plugins/simpe'
+    './plugins/simple'
 ]
-two: [10,20,30],
-one: {$ref: 'two'}
+one: [10,20,30],
+two: ~ one
+three: "abc"
 controller: 
     create: './TestClass'
     ready: 
         saySmth: [
-            ~ one
+            ~ two
+            ~ three
         ]
 template: '
         |section
