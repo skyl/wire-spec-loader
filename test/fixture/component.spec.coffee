@@ -19,3 +19,10 @@ template: '
 '
 someModule:
     module: './someModule'
+wiredDeferredModule:
+    wire:
+        spec: './wiredDeferredModuleSpec'
+        defer: true
+# wiredModule:
+#     wire:
+#         spec: './wiredModuleSpec'

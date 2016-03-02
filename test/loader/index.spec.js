@@ -30,6 +30,7 @@ describe('wired context', () => {
         expect(rootContext.template).to.be.a('string');
         expect(rootContext.controller).to.be.a('object');
         expect(rootContext.controller.saySmth).to.be.a('function');
+        expect(rootContext.wiredDeferredModule).to.be.a('function');
         done();
     });
 
