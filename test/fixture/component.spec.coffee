@@ -7,7 +7,7 @@ controller:
     create: './TestClass'
     ready: 
         saySmth: [
-            
+            ~ one
         ]
 template: '
         |section

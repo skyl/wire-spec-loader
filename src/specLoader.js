@@ -6,15 +6,14 @@ var _ = require('underscore');
 var traverse = require('./assets/traverse');
 var analyzeCode = require('./assets/analyzeCode');
 var addImport = require('./assets/addImport');
+var replaceReference = require('./assets/replaceReference');
 var wrapInModuleExportExpression = require('./assets/wrapInModuleExportExpression');
-
-var defaultSpecRegex = /\.(wire\.spec|wire)$/;
-var removeCommentsRx = /\/\*[\s\S]*?\*\//g;
-
 
 module.exports = function(source) {
     this.cacheable && this.cacheable();
     var result = coffee.compile(source, {bare: true});
+
+    result = replaceReference(result)
 
     var pendingImports = [];
     function addImports(ast) {

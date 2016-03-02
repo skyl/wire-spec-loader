@@ -8,18 +8,20 @@ import wire                 from 'essential-wire';
 // import wireDebugPlugin      from 'essential-wire/source/debug';
 
 import normalize from '../../src/assets/normalize';
+import replaceReference from '../../src/assets/replaceReference';
 
 import spec from '../fixture/component.spec.coffee';
 
-describe('normalize asset method', () => {
-    let str = null;
-    const before = () => {
-        str = normalize('one.super.spec.coffee');
-    }
+describe('asset methods', () => {
+    let str = normalize('one.super.spec.coffee');
+    let refString = replaceReference("~oneRef, ~ anotherRef123");
 
-    beforeEach(before);
     it('should capitalize fragments and remove extention', () => {
         expect(str).to.equal('oneSuperSpec');
+    });
+
+    it('should replace references', () => {
+        expect(refString).to.equal("{$ref: 'oneRef'}, {$ref: 'anotherRef123'}");
     });
 });
 
@@ -55,7 +57,7 @@ describe('wired context', () => {
         done()
     });
 
-    xit('should provide reference to another component ~', (done) => {
+    it('should provide reference to another component ~', (done) => {
         done()
     });
 
