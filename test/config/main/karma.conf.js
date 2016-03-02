@@ -36,7 +36,7 @@ module.exports = function (config) {
             loaders: [
                 {   
                     test: /\.spec\.coffee$/, 
-                    loaders: ['babel', '../../index'],
+                    loaders: ['../../index'],
                     exclude: /node_modules/
                 },
                 {   

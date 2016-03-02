@@ -9,7 +9,7 @@ import wire                 from 'essential-wire';
 
 import normalize from '../../src/assets/normalize';
 
-// import spec from '../fixture/component.spec.coffee';
+import spec from '../fixture/component.spec.coffee';
 
 describe('assets', () => {
     let str = null;

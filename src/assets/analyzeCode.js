@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var normalize = require('./normalize');
 
 module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
     var specComponents;
@@ -11,7 +12,7 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
                 if(component.value.type === 'ArrayExpression' && component.key.name === '$plugins'){
                     _.each(component.value.elements, function(element, index, elements){
                         var path = element.value;
-                        var pluginName = _.last(path.split('/')) + _.uniqueId();
+                        var pluginName = normalize(_.last(path.split('/'))) + _.uniqueId();
                         pendingImports.push({name: pluginName, path: path});
                         pendingPlugins.push({name: pluginName, path: path});
                         elements[index] = element;
@@ -33,7 +34,7 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
                         ){
                             if(props.value.type === 'Literal') {
                                 var path = props.value.value;
-                                var moduleName = _.last(path.split('/')) + _.uniqueId();
+                                var moduleName = normalize(_.last(path.split('/'))) + _.uniqueId();
                                 pendingImports.push({name: moduleName, path: path});
                                 props.value = _.extend(props.value, 
                                     {
