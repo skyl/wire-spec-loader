@@ -17,7 +17,6 @@ describe('wired context', () => {
         wire(spec)
         .then(context => {
             rootContext = context;
-            console.log("rootContext:::", rootContext);
             done();
         })
         .otherwise(error => console.log("ERROR::::", error))

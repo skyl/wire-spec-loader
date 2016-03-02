@@ -21,8 +21,6 @@ module.exports = function(source) {
 
     result = escodegen.generate(ast);
 
-    console.log("result:::", result);
-
     return result;
 };
 

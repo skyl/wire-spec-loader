@@ -17,9 +17,6 @@ addImports(ast);
 
 result = escodegen.generate(ast);
 
-console.log("result:::", result);
-
-
 function analyzeCode(code) {
     var ast = esprima.parse(code);
 
