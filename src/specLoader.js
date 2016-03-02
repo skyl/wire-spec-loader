@@ -12,27 +12,33 @@ var removeCommentsRx = /\/\*[\s\S]*?\*\//g;
 module.exports = function(source) {
     this.cacheable && this.cacheable();
     var result = coffee.compile(source, {bare: true});
-    // result = 'module.exports = ' + result;
 
     result = result.replace(removeCommentsRx, '');
-    regenerateCode(result);
+
+    var ast = analyzeCode(result);
+    result = "module.exports = " + escodegen.generate(ast);
+    
     return result;
 };
 
-function regenerateCode(code) {
+function analyzeCode(code) {
     var ast = esprima.parse(code);
+
     traverse(ast, function(node) {
         if(node.type === 'ExpressionStatement' ){
-            var specComponents = node.expression.right.properties
+            var specComponents = node.expression.properties
             _.each(specComponents, function(component){
                 if(component.value.type === 'ObjectExpression'){
                     _.each(component.value.properties, function(props){
                         if(props.key.type === 'Identifier' && (props.key.name === 'create' || props.key.name === 'module')){
                             var path = props.value.value;
                             var moduleName = _.last(path.split('/')) + _.uniqueId();
-                            imports += "var " + moduleName + " = require('" + path + "');");
+                            pushImport(ast, moduleName, path);
                             props.value = _.extend(props.value, 
-                                {raw: moduleName}
+                                {
+                                    type: "Identifier",
+                                    name: moduleName
+                                }
                             );
                         }
                     })
@@ -40,7 +46,7 @@ function regenerateCode(code) {
             })
         }
     });
-    return escodegen.generate(ast);
+    return ast;
 }
 
 function traverse(node, func) {
@@ -59,4 +65,34 @@ function traverse(node, func) {
             }
         }
     }
+}
+
+function pushImport(ast, varName, path) {
+    ast.body.push({
+        "type": "VariableDeclaration",
+        "declarations": [
+            {
+                "type": "VariableDeclarator",
+                "id": {
+                    "type": "Identifier",
+                    "name": varName
+                },
+                "init": {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "Identifier",
+                        "name": "require"
+                    },
+                    "arguments": [
+                        {
+                            "type": "Literal",
+                            "value": path,
+                            "raw": "'" + path + "'"
+                        }
+                    ]
+                }
+            }
+        ],
+        "kind": "var"
+    });
 }
