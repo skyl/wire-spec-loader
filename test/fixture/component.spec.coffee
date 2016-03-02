@@ -23,6 +23,5 @@ wiredDeferredModule:
     wire:
         spec: './wiredDeferredModuleSpec'
         defer: true
-# wiredModule:
-#     wire:
-#         spec: './wiredModuleSpec'
+wiredModuleShortSyntax:
+    wire: './wiredModule.spec.coffee'

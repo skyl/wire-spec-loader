@@ -28,7 +28,9 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
 
                 if(component.value.type === 'ObjectExpression'){
                     _.each(component.value.properties, function(props){
-                        if(props.key.type === 'Identifier' && (props.key.name === 'create' || props.key.name === 'module')){
+                        if(props.key.type === 'Identifier' && 
+                            (props.key.name === 'create' || props.key.name === 'module' || props.key.name === 'wire' )
+                        ){
                             if(props.value.type === 'Literal') {
                                 var path = props.value.value;
                                 var moduleName = _.last(path.split('/')) + _.uniqueId();
@@ -40,6 +42,13 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
                                     }
                                 );
                             }
+                        }
+
+                        if(props.key.type === 'Identifier' && props.key.name === 'wire'){
+                            // if(props.value.type === 'Literal') {
+                            //     var path = props.value.value;
+                            //     console.log("props.value::::", props.value);
+                            // }
                         }
                     })
                 }

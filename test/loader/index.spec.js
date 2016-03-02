@@ -7,9 +7,23 @@ chai.use(spies);
 import wire                 from 'essential-wire';
 // import wireDebugPlugin      from 'essential-wire/source/debug';
 
-import spec from '../fixture/component.spec.coffee';
+import normalize from '../../src/assets/normalize';
 
-describe('wired context', () => {
+// import spec from '../fixture/component.spec.coffee';
+
+describe('assets', () => {
+    let str = null;
+    const before = () => {
+        str = normalize('one.super.spec.coffee');
+    }
+
+    beforeEach(before);
+    it('should be ok', () => {
+        expect(str).to.equal('oneSuperSpec');
+    });
+});
+
+xdescribe('wired context', () => {
 
     let rootContext = null;
 
