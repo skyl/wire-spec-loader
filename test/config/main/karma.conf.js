@@ -36,7 +36,7 @@ module.exports = function (config) {
             loaders: [
                 {   
                     test: /\.spec\.coffee$/, 
-                    loaders: ['../../index?markup=component&componentsDir=../../fixture/components/'],
+                    loaders: ['../../index?markup=component&componentsDir=./components/'],
                     exclude: /node_modules/
                 },
                 {   

@@ -20,13 +20,15 @@ function run(source, callback, options) {
             },
             parse: {},
             analizeAst: {
-                markup: options.markup
+                markup: options.markup,
+                componentsDir: options.componentsDir
             },
             addImports: {},
             generate: {}
         }
     })
     .then(function(context){
+        // console.log("context.source.result:::::", context.source.result);
         callback(null, context.source.result);
     })
     .otherwise(function(error){
@@ -39,7 +41,9 @@ module.exports = function(source) {
     var callback = this.async();
     var options = {};
 
-    var queries = this.query;
+    // TODO: strange, this.query - '?markup=.....'
+    // hack:
+    var queries = this.query.slice(1);
 
     if(typeof queries !== 'undefined'){
         queries = queries.split('&');

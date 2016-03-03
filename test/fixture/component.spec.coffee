@@ -15,10 +15,6 @@ controller:
 component: '
         |section
         |   header
-        |   content
-        |       oneBlock
-        |       twoBlock
-        |   footer
 '
 someModule:
     module: './someModule'

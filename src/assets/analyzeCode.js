@@ -77,6 +77,8 @@ module.exports = function analyzeCode(ast, traverseFunc, options) {
                     _.each(_.uniq(markup), function(component){
                         var path = options.componentsDir + component;
                         var componentName = component + _.uniqueId();
+
+                        console.log("PATH:::", path);
                         imports.push({name: componentName, path: path});
                     })
                 }

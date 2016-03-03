@@ -20,7 +20,8 @@ function run(source) {
             },
             parse: {},
             analizeAst: {
-                markup: 'component'
+                markup: 'component',
+                componentsDir: './components/'
             },
             addImports: {},
             generate: {}
