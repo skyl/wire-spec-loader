@@ -15,7 +15,7 @@ module: {
     loaders: [
         {   
             test: /\.spec\.coffee$/, 
-            loaders: ['../../index?markup=component&componentsDir=' + componentsDir],
+            loaders: ['wire-spec-loader?markup=component&componentsDir=' + componentsDir],
             exclude: /node_modules/
         }
     ]
