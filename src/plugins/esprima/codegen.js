@@ -1,14 +1,15 @@
+var escodegen = require('escodegen');
+
 function generate(resolver, compDef, wire) {
-    resolver.resolve();
+    wire(compDef.options).then(function(ast){
+        resolver.resolve(escodegen.generate(ast));
+    })
 }
 
 module.exports = function(options) {
     return {
         factories: {
-            generate: generate 
-        },
-        facets: {
-            
+            generate: generate
         }
     }
 }

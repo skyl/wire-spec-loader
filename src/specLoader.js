@@ -31,7 +31,8 @@ module.exports = function(source) {
             compile: source,
             translate: {
                 reference: true
-            }
+            },
+            
         },
         // ast: {
         //     parse: {$ref: 'source'},

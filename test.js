@@ -3,7 +3,7 @@ var fs = require('fs');
 
 var compilationPlugin = require('./src/plugins/compile');
 var translatePlugin = require('./src/plugins/translate');
-var esprimaPlugin = require('./src/plugins/esprima/parse');
+var esprimaPlugin = require('./src/plugins/esprima');
 var escodegenPlugin = require('./src/plugins/esprima/codegen');
 
 function run(source) {
@@ -21,11 +21,16 @@ function run(source) {
             translate: {
                 reference: true
             },
-            parse: {}
+            parse: {},
+            wrapInExport: {},
+            addImports: {},
+        },
+        code: {
+            generate: {$ref: 'source.ast'}
         }
     })
     .then(function(context){
-        console.log("source::::", context.source.raw, context.source.ast);
+        console.log("source::::", context.source.raw, context.source.ast, '/n', context.code);
     })
     .otherwise(function(error){
         console.error("ERROR:::", error);
