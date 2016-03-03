@@ -11,7 +11,7 @@ import normalize from '../../src/assets/normalize';
 import replaceReference from '../../src/assets/replaceReference';
 import importModules from '../../src/assets/importModules';
 
-// import spec from '../fixture/component.spec.coffee';
+import spec from '../fixture/component.spec.coffee';
 
 describe('asset methods', () => {
     let str = normalize('one.super.spec.coffee');
@@ -34,7 +34,7 @@ describe('asset methods', () => {
     });
 });
 
-xdescribe('wired context', () => {
+describe('wired context', () => {
 
     let rootContext = null;
 
@@ -74,32 +74,6 @@ xdescribe('wired context', () => {
     xit('should import module by sign <- ', (done) => {
         expect(rootContext.middleware.api.router).to.be.a('function');
         done()
-    });
-
-});
-
-import spec from '../fixture/simple.spec.coffee';
-
-describe('wired simple context', () => {
-
-    let rootContext = null;
-
-    const before = (done) => {
-        wire(spec)
-        .then(context => {
-            rootContext = context;
-            done();
-        })
-        .otherwise(error => console.log("ERROR::::", error))
-    }
-
-    beforeEach(before);
-
-    it('should be ok', (done) => {
-        console.log("rootContext:::", rootContext);
-        expect(rootContext).to.be.ok;
-        expect(rootContext.one).to.be.an('array');
-        done();
     });
 
 });

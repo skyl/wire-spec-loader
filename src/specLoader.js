@@ -11,9 +11,9 @@ var wrapInModuleExportExpression = require('./assets/wrapInModuleExportExpressio
 
 var wire = require('essential-wire');
 
-var compilationPlugin = require('./src/plugins/compile');
-var translatePlugin = require('./src/plugins/translate');
-var esprimaPlugin = require('./src/plugins/esprima');
+var compilationPlugin = require('./plugins/compile');
+var translatePlugin = require('./plugins/translate');
+var esprimaPlugin = require('./plugins/esprima');
 
 function run(source, callback) {
     wire({
@@ -34,7 +34,6 @@ function run(source, callback) {
         }
     })
     .then(function(context){
-        console.log(context.source.result);
         callback(null, context.source.result);
     })
     .otherwise(function(error){
