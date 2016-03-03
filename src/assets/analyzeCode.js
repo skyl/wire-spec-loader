@@ -22,6 +22,8 @@ module.exports = function analyzeCode(ast, traverseFunc, options) {
         if(node.type === 'ExpressionStatement' ){
             specComponents = node.expression.properties
             _.each(specComponents, function(component){
+
+                // sniff for plugins imports
                 if(component.value.type === 'ArrayExpression' && component.key.name === '$plugins'){
                     _.each(component.value.elements, function(element, index, elements){
                         var path = element.value;
@@ -40,6 +42,7 @@ module.exports = function analyzeCode(ast, traverseFunc, options) {
                     })
                 }
 
+                // search for factories imports 
                 if(component.value.type === 'ObjectExpression'){
                     _.each(component.value.properties, function(props){
                         if(props.key.type === 'Identifier' && 
