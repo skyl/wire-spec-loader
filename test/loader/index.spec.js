@@ -69,7 +69,6 @@ describe('wired context', () => {
         done()
     });
 
-    // TODO
     it('should import module by sign <- ', (done) => {
         expect(rootContext.middleware.router).to.be.a('function');
         done()
