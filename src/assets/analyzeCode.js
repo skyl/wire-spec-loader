@@ -62,6 +62,7 @@ module.exports = function analyzeCode(ast, traverseFunc, options) {
                     })
                 }
 
+                // search for markup imports 
                 if(component.value.type === "Literal" && (options && options.markup ? component.key.name === options.markup : void 0)){
                     var markup = component.value.value;
                     markup = markup.split('|');
