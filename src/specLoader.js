@@ -25,7 +25,8 @@ function run(source, callback) {
         source: {
             compile: source,
             translate: {
-                reference: true
+                reference: true,
+                importReference: true
             },
             parse: {},
             wrapInExport: {},

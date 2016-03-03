@@ -1,1 +1,1 @@
-export default function NavigationRouter(str) {}
+module.exports = function NavigationRouter(str) {}

@@ -70,8 +70,8 @@ describe('wired context', () => {
     });
 
     // TODO
-    xit('should import module by sign <- ', (done) => {
-        expect(rootContext.middleware.api.router).to.be.a('function');
+    it('should import module by sign <- ', (done) => {
+        expect(rootContext.middleware.router).to.be.a('function');
         done()
     });
 

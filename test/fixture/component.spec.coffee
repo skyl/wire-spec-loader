@@ -31,4 +31,5 @@ wiredModuleShortSyntax:
 wiredModuleLongSyntax:
     wire: 
         spec: './wiredModule.spec.coffee'
-backwardImport: '<- ./backwardImport'
+middleware: 
+    router: '<- ./navigation.router'
