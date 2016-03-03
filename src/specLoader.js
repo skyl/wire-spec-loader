@@ -11,21 +11,16 @@ var wrapInModuleExportExpression = require('./assets/wrapInModuleExportExpressio
 
 var wire = require('essential-wire');
 
-var compilationPlugin = require('./plugins/compile');
-var translatePlugin = require('./plugins/translate');
-var esprimaPlugin = require('./plugins/esprima/parse');
-var escodegenPlugin = require('./plugins/esprima/codegen');
+var compilationPlugin = require('./src/plugins/compile');
+var translatePlugin = require('./src/plugins/translate');
+var esprimaPlugin = require('./src/plugins/esprima');
 
-module.exports = function(source) {
-    this.cacheable && this.cacheable();
-    var callback = this.async();
-
+function run(source, callback) {
     wire({
         $plugins: [
             compilationPlugin,
             translatePlugin,
-            esprimaPlugin,
-            escodegenPlugin
+            esprimaPlugin
         ],
         source: {
             compile: source,
@@ -35,41 +30,20 @@ module.exports = function(source) {
             parse: {},
             wrapInExport: {},
             addImports: {},
-        },
-        code: {
-            generate: {$ref: 'source.ast'}
+            generate: {}
         }
     })
     .then(function(context){
-        console.log("source::::", '\n\n', context.code, '\n\n', context.source.imports);
-        callback(null, context.code);
+        console.log(context.source.result);
+        callback(null, context.source.result);
     })
     .otherwise(function(error){
-        console.error("ERROR:::", error);
         callback(error);
     });
+}
 
-    return;
-    // -------------
-
-    var result = coffee.compile(source, {bare: true});
-
-    result = replaceReference(result)
-
-    var pendingImports = [];
-
-    function addImports(ast) {
-        _.each(pendingImports, function(obj) {
-            addImport(ast, obj.name, obj.path);
-        })
-    }
-
-    var specComponents = analyzeCode(esprima.parse(result), traverse, pendingImports);
-
-    var ast = wrapInModuleExportExpression(specComponents);
-    addImports(ast);
-
-    result = escodegen.generate(ast);
-
-    return result;
+module.exports = function(source) {
+    this.cacheable && this.cacheable();
+    var callback = this.async();
+    run(source, callback);
 };
