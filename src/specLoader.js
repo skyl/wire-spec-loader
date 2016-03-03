@@ -32,19 +32,17 @@ module.exports = function(source) {
             translate: {
                 reference: true
             },
-            
+            parse: {},
+            wrapInExport: {},
+            addImports: {},
         },
-        // ast: {
-        //     parse: {$ref: 'source'},
-        //     recordImports: {}
-        // },
-        // code: {
-        //     generate: {$ref: 'ast'}
-        // }
+        code: {
+            generate: {$ref: 'source.ast'}
+        }
     })
     .then(function(context){
-        console.log("context::::", context.source);
-        callback(null, context.source);
+        console.log("source::::", '\n\n', context.code, '\n\n', context.source.imports);
+        callback(null, context.code);
     })
     .otherwise(function(error){
         console.error("ERROR:::", error);

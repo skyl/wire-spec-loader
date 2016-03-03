@@ -14,7 +14,7 @@ module.exports = function(options) {
     return {
         facets: {
             translate: {
-                'ready:before': translate
+                'create:after': translate
             }
         }
     }

@@ -11,9 +11,6 @@ module.exports = function(options) {
     return {
         factories: {
             compile: compile 
-        },
-        facets: {
-
         }
     }
 }

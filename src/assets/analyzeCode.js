@@ -1,14 +1,15 @@
 var _ = require('underscore');
 var normalize = require('./normalize');
 
-module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
+module.exports = function analyzeCode(ast, traverseFunc) {
     var specComponents;
-    var pendingPlugins = [];
+    var imports = [];
+    var plugins = [];
 
     function changeComponentDescription(props) {
         var path = props.value.value;
         var moduleName = normalize(_.last(path.split('/'))) + _.uniqueId();
-        pendingImports.push({name: moduleName, path: path});
+        imports.push({name: moduleName, path: path});
         props.value = _.extend(props.value, 
             {
                 type: "Identifier",
@@ -25,13 +26,13 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
                     _.each(component.value.elements, function(element, index, elements){
                         var path = element.value;
                         var pluginName = normalize(_.last(path.split('/'))) + _.uniqueId();
-                        pendingImports.push({name: pluginName, path: path});
-                        pendingPlugins.push({name: pluginName, path: path});
+                        imports.push({name: pluginName, path: path});
+                        plugins.push({name: pluginName, path: path});
                         elements[index] = element;
                     });
                     
                     component.value.elements = [];
-                    _.each(pendingPlugins, function(plugin){
+                    _.each(plugins, function(plugin){
                         component.value.elements.push({
                             type: "Identifier",
                             name: plugin.name
@@ -63,5 +64,8 @@ module.exports = function analyzeCode(ast, traverseFunc, pendingImports) {
             })
         }
     });
-    return specComponents;
+    return {
+        specComponents: specComponents,
+        imports: imports
+    }
 }

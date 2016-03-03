@@ -1,8 +1,10 @@
 var esprima = require('esprima');
+var escodegen = require('escodegen');
 var _ = require('underscore');
 
 var analyzeCode = require('../../assets/analyzeCode');
 var traverse = require('../../assets/traverse');
+var addImport = require('../../assets/addImport');
 var wrapInModuleExportExpression = require('../../assets/wrapInModuleExportExpression');
 
 function parse(resolver, facet, wire) {
@@ -14,17 +16,35 @@ function parse(resolver, facet, wire) {
 function wrapInExport(resolver, facet, wire) {
     var target = facet.target;
     var ast = target.ast;
-    var pendingImports = [];
-    var specComponents = analyzeCode(ast, traverse, pendingImports);
+    var obj = analyzeCode(ast, traverse);
+
     resolver.resolve(_.extend(target, 
-        {ast: wrapInModuleExportExpression(specComponents)}
+        {  
+            ast: wrapInModuleExportExpression(obj.specComponents),
+            imports: obj.imports
+        }
     ));
 }
 
 function addImports(resolver, facet, wire) {
     var target = facet.target;
     var ast = target.ast;
-    resolver.resolve(target);
+    var imports = target.imports;
+
+    function addImportsToAst(ast, imports) {
+        _.each(imports, function(obj) {
+            addImport(ast, obj.name, obj.path);
+        })
+    }
+
+    addImportsToAst(ast, imports);
+    resolver.resolve(_.extend(target, {ast: ast}));
+}
+
+function generate(resolver, facet, wire) {
+    var target = facet.target;
+    var ast = target.ast;
+    resolver.resolve(_.extend(target, {result: escodegen.generate(ast)}));
 }
 
 module.exports = function(options) {
@@ -38,6 +58,9 @@ module.exports = function(options) {
             },
             addImports: {
                 'ready:before': addImports
+            },
+            generate: {
+                'ready': generate
             }
         }
     }
