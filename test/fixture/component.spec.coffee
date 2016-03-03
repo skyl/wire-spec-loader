@@ -12,7 +12,7 @@ controller:
             ~ three
         ]
 
-template: '
+component: '
         |section
         |   header
         |   content

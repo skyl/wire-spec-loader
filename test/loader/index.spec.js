@@ -49,10 +49,9 @@ describe('wired context', () => {
     beforeEach(before);
 
     it('should be ok', (done) => {
-        console.log("rootContext.template", rootContext.template);
         expect(rootContext).to.be.ok;
         expect(rootContext.two).to.be.an('array');
-        expect(rootContext.template).to.be.a('string');
+        expect(rootContext.component).to.be.a('string');
         expect(rootContext.controller).to.be.an('object');
         expect(rootContext.controller.saySmth).to.be.a('function');
         done();

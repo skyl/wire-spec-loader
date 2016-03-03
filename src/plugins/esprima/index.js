@@ -13,12 +13,14 @@ function parse(resolver, facet, wire) {
     resolver.resolve(_.extend(target, {ast: esprima.parse(raw)}));
 }
 
-function wrapInExport(resolver, facet, wire) {
+function analizeAst(resolver, facet, wire) {
     var target = facet.target;
     var ast = target.ast;
     var imports = target.imports;
 
-    var obj = analyzeCode(ast, traverse);
+    // analyzeCode search imports to $lugins array and wire.js default factories
+    // TODO: provide import for plugins with complex definition {module:.... etc}
+    var obj = analyzeCode(ast, traverse, facet.options);
 
     resolver.resolve(_.extend(target, 
         {  
@@ -55,8 +57,8 @@ module.exports = function(options) {
             parse: {
                 'configure:before': parse
             },
-            wrapInExport: {
-                'configure:after': wrapInExport
+            analizeAst: {
+                'configure:after': analizeAst
             },
             addImports: {
                 'ready:before': addImports

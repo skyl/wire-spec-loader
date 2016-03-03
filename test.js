@@ -19,7 +19,9 @@ function run(source) {
                 importReference: true
             },
             parse: {},
-            wrapInExport: {},
+            analizeAst: {
+                markup: 'component'
+            },
             addImports: {},
             generate: {}
         }

@@ -19,7 +19,9 @@ function run(source, callback, options) {
                 importReference: true
             },
             parse: {},
-            wrapInExport: {},
+            analizeAst: {
+                markup: options.markup
+            },
             addImports: {},
             generate: {}
         }

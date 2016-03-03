@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var normalize = require('./normalize');
 
-module.exports = function analyzeCode(ast, traverseFunc) {
+module.exports = function analyzeCode(ast, traverseFunc, options) {
     var specComponents;
     var imports = [];
     var plugins = [];
@@ -59,6 +59,21 @@ module.exports = function analyzeCode(ast, traverseFunc) {
                                 });
                             }
                         }
+                    })
+                }
+
+                if(component.value.type === "Literal" && (options && options.markup ? component.key.name === options.markup : void 0)){
+                    var markup = component.value.value;
+                    markup = markup.split('|');
+                    markup = _.filter(_.map(markup, function(line){
+                        return line.replace(/\s+/g, '');
+                    }), function(line){
+                        return line.length;
+                    });
+                    _.each(_.uniq(markup), function(component){
+                        var path = options.componentsDir + component;
+                        var componentName = component + _.uniqueId();
+                        imports.push({name: componentName, path: path});
                     })
                 }
             })
