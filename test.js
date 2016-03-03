@@ -15,7 +15,8 @@ function run(source) {
         source: {
             compile: source,
             translate: {
-                reference: true
+                reference: true,
+                importReference: true
             },
             parse: {},
             wrapInExport: {},
@@ -31,5 +32,5 @@ function run(source) {
     });
 }
 
-var source = fs.readFileSync('./test/fixture/simple.spec.coffee', 'utf-8');
+var source = fs.readFileSync('./test/fixture/component.spec.coffee', 'utf-8');
 run(source)

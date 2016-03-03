@@ -16,12 +16,14 @@ function parse(resolver, facet, wire) {
 function wrapInExport(resolver, facet, wire) {
     var target = facet.target;
     var ast = target.ast;
+    var imports = target.imports;
+
     var obj = analyzeCode(ast, traverse);
 
     resolver.resolve(_.extend(target, 
         {  
             ast: wrapInModuleExportExpression(obj.specComponents),
-            imports: obj.imports
+            imports: imports.concat(obj.imports)
         }
     ));
 }

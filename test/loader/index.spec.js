@@ -8,7 +8,7 @@ import wire                 from 'essential-wire';
 
 import normalize from '../../src/assets/normalize';
 import replaceReference from '../../src/assets/replaceReference';
-import importModules from '../../src/assets/importModules';
+import backwardImport from '../../src/assets/backwardImport';
 
 import spec from '../fixture/component.spec.coffee';
 
@@ -26,10 +26,10 @@ describe('asset methods', () => {
     });
 
     it('should return list imported pathes', () => {
-        let result = importModules(textWithImports);
-        expect(result).to.be.an('array');
-        expect(result[0].path).to.equal('./some/path');
-        expect(result[1].path).to.equal('./some/path2');
+        let result = backwardImport(textWithImports);
+        expect(result).to.be.an('object');
+        expect(result.imports[0].path).to.equal('./some/path');
+        expect(result.imports[1].path).to.equal('./some/path2');
     });
 });
 
