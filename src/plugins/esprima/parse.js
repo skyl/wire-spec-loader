@@ -1,9 +1,10 @@
 var esprima = require('esprima');
+var _ = require('underscore');
 
-function parse(resolver, compDef, wire) {
-    wire(compDef.options).then(function(source){
-        resolver.resolve(esprima.parse(source));
-    })
+function parse(resolver, facet, wire) {
+    var target = facet.target;
+    var raw = target.raw
+    resolver.resolve(_.extend(target, {ast: esprima.parse(raw)}));
 }
 
 function recordImports(resolver, facet, wire) {
@@ -12,10 +13,10 @@ function recordImports(resolver, facet, wire) {
 
 module.exports = function(options) {
     return {
-        factories: {
-            parse: parse 
-        },
         facets: {
+            parse: {
+                'ready:before': parse
+            },
             recordImports: {
                 'configure:before': recordImports
             }

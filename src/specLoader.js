@@ -12,6 +12,7 @@ var wrapInModuleExportExpression = require('./assets/wrapInModuleExportExpressio
 var wire = require('essential-wire');
 
 var compilationPlugin = require('./plugins/compile');
+var translatePlugin = require('./plugins/translate');
 var esprimaPlugin = require('./plugins/esprima/parse');
 var escodegenPlugin = require('./plugins/esprima/codegen');
 
@@ -22,22 +23,26 @@ module.exports = function(source) {
     wire({
         $plugins: [
             compilationPlugin,
+            translatePlugin,
             esprimaPlugin,
             escodegenPlugin
         ],
         source: {
             compile: source,
+            translate: {
+                reference: true
+            }
         },
-        ast: {
-            parse: {$ref: 'source'},
-            recordImports: {}
-        },
+        // ast: {
+        //     parse: {$ref: 'source'},
+        //     recordImports: {}
+        // },
         // code: {
         //     generate: {$ref: 'ast'}
         // }
     })
     .then(function(context){
-        console.log("context::::", context);
+        console.log("context::::", context.source);
         callback(null, context.source);
     })
     .otherwise(function(error){

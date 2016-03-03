@@ -1,8 +1,10 @@
 var coffee = require('coffee-script');
 
 function compile(resolver, compDef, wire) {
-    var result = coffee.compile(compDef.options, {bare: true});
-    resolver.resolve(result);
+    resolver.resolve({
+        raw: coffee.compile(compDef.options, {bare: true}),
+        ast: null
+    });
 }
 
 module.exports = function(options) {
@@ -11,7 +13,7 @@ module.exports = function(options) {
             compile: compile 
         },
         facets: {
-            
+
         }
     }
 }
