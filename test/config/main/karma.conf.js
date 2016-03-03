@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 
+var componentsDir = __dirname + "/../../fixture/components/"
+
 module.exports = function (config) {
   config.set({
     browsers: [ 'PhantomJS' ],
@@ -36,7 +38,7 @@ module.exports = function (config) {
             loaders: [
                 {   
                     test: /\.spec\.coffee$/, 
-                    loaders: ['../../index?markup=component&componentsDir=./components/'],
+                    loaders: ['../../index?markup=component&componentsDir=' + componentsDir],
                     exclude: /node_modules/
                 },
                 {   
