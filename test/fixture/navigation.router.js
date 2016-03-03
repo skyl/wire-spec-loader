@@ -1,1 +1,3 @@
-module.exports = function NavigationRouter(str) {}
+module.exports = function router(str) {
+    console.log(str);
+}

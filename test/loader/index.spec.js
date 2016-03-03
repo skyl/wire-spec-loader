@@ -65,12 +65,14 @@ describe('wired context', () => {
         done()
     });
 
-    it('should provide reference to another component ~', (done) => {
+    it('should import module by sign <- ', (done) => {
+        expect(rootContext.middleware.router).to.be.a('function');
+        expect(rootContext.backwardImport.default).to.be.a('function');
         done()
     });
 
-    it('should import module by sign <- ', (done) => {
-        expect(rootContext.middleware.router).to.be.a('function');
+    it('should provide reference to another component by sign ~', (done) => {
+        expect(rootContext.refToMiddleware).to.be.a('function');
         done()
     });
 
