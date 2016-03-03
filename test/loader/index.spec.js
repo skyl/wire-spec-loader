@@ -5,7 +5,6 @@ import when from 'when';
 chai.use(spies);
 
 import wire                 from 'essential-wire';
-// import wireDebugPlugin      from 'essential-wire/source/debug';
 
 import normalize from '../../src/assets/normalize';
 import replaceReference from '../../src/assets/replaceReference';
