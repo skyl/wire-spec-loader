@@ -35,5 +35,5 @@ function run(source) {
     });
 }
 
-var source = fs.readFileSync('./test/fixture/component.spec.coffee', 'utf-8');
+var source = fs.readFileSync('./test/fixture/component.ess', 'utf-8');
 run(source)
